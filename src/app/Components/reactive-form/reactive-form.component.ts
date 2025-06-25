@@ -202,13 +202,13 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   onSubmit() {
     this.loading.set(true);
     if(this.dynamicForm?.invalid){
-      console.log('invalid');
+      
       
       this.toastServ.showToastError("Invalid", "There are validation issues in your submission. Please review the form and try again.")
 
       this.loading.set(false);
     }
-    console.log(this.dynamicForm?.value);
+   
   }
 
   onHide() {

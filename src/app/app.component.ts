@@ -37,8 +37,7 @@ ngOnInit(): void {
   }
 
   showDialog(Id:number) {
-    console.log(Id);
-
+ 
   const fetched = this.users().filter((p: any) => p.Id == Id)
     this.filteredData.set(fetched[0]);
     this.visible.set(true);
