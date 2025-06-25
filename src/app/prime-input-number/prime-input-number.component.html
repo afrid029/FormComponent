@@ -4,24 +4,24 @@
         @if(isCurrentControlRequiredOnDefault() && showRequiredIcon){
 
         <span class="text-right" [style]="{ color: 'red' }"
-            *ngIf="isCurrentControlRequiredOnDefault() && showRequiredIcon">*</span>
+            *ngIf="isCurrentControlRequiredOnDefault() && showRequiredIcon"> *</span>
         }
     </span>
 
-    <div class="d-flex flex-col gap-3">
-          <p-inputnumber mode="decimal" inputId="withoutgrouping" [useGrouping]="false" [readonly]="isReadOnly"
+    <p-inputnumber mode="decimal" inputId="withoutgrouping" [useGrouping]="false" [readonly]="isReadOnly"
         [formControl]="control" pAutoFocus [autofocus]="autoFocus" [id]="uniqueId" [placeholder]="placeholder"
-       [class]="isCurrentControlRequiredOnDefault() ? 'p-inputtext-sm required' : 'p-inputtext-sm'"  aria-describedby="label" class="w-full" [ngClass]="{ 'ng-invalid ng-dirty': isError() }"
-        pInputText />
+        [class]="isError() ? 'p-inputtext-sm required' : 'p-inputtext-sm'" aria-describedby="label" class="w-full"
+        [ngClass]="{ 'ng-invalid ng-dirty': isError() }" pInputText />
 
-     <app-data-loader class="d-flex justify-content-center align-items-center" [dataLoaded]="dataLoaded"></app-data-loader>
-    
-    </div>
-    
-     <small id="sm-text-{{ label }}" *ngIf="hasSmallText">{{ smallText }}</small>
 
-    <ng-container *ngIf="isError()">
-        <app-prime-error [direction]="direction" [customErrorMessages]="customErrorMessages" [errors]="control.errors">
-        </app-prime-error>
-    </ng-container>
+
+    <small id="sm-text-{{ label }}" *ngIf="hasSmallText">{{ smallText }}</small>
+
+    @if(isError()) {
+
+        <ng-container>
+            <app-prime-error [direction]="direction" [customErrorMessages]="customErrorMessages" [errors]="control.errors">
+            </app-prime-error>
+        </ng-container>
+    }
 </div>

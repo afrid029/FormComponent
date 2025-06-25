@@ -7,6 +7,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  signal
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -30,6 +31,10 @@ import { ButtonComponent } from '../../prime-button/button/button.component';
 import { MaximumAge } from '../../Validators/MaximumAge.validator';
 import { GetDataService } from '../../Services/get-data.service';
 import { AcceptValidator } from '../../Validators/AcceptValidator.validator';
+import { DataLoaderComponent } from '../../data-loader/data-loader.component';
+import { MessageService } from 'primeng/api';
+import { Toast, ToastModule } from 'primeng/toast';
+import { ToastService } from '../../Services/toast.service';
 
 @Component({
   selector: 'app-reactive-form',
@@ -45,22 +50,28 @@ import { AcceptValidator } from '../../Validators/AcceptValidator.validator';
     PrimeSelectButtonComponent,
     PrimeInputNumberComponent,
     ButtonComponent,
+    DataLoaderComponent,
+    Toast,
+    ToastModule
   ],
+
+  providers : [],
   templateUrl: './reactive-form.component.html',
   styleUrl: './reactive-form.component.scss',
 })
 export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   dynamicForm: FormGroup | undefined;
-  disable: boolean = true;
-  loading : boolean = false;
-  dataLoaded : boolean = true;
-  gender: Record<string, string>[] = [
+  disable = signal<boolean>(false);
+  loading = signal<boolean>(false);
+  dataLoaded = signal<boolean>(true);
+
+  gender = signal<Record<string, string>[]> ([
     { type: 'Male' },
     { type: 'Female' },
     { type: 'Not Prefer To Say' },
-  ];
+  ]);
 
-  countries: Record<string, string>[] = [
+  countries = signal<Record<string, string>[]> ([
     { name: 'Australia' },
     { name: 'Austria' },
     { name: 'Bangaladesh' },
@@ -109,26 +120,27 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'Austria' },
     { name: 'Bangaladesh' },
     { name: 'Canada' },
-  ];
+  ]);
 
-  stateOptions: Record<string, string>[] = [
+  stateOptions = signal<Record<string, string>[]> ([
     { label: 'No', value: 'no' },
     { label: 'Yes', value: 'yes' },
-  ];
-  minDate: Date | undefined;
+  ]);
+  minDate = signal<Date | undefined> (undefined);
+
   @Input() visible: boolean = true;
   @Input() editData: any = {};
   @Output() onClose = new EventEmitter();
 
-  constructor(private fb: FormBuilder, private dataServ: GetDataService) {}
+  constructor(private fb: FormBuilder, private dataServ: GetDataService, private toastServ : ToastService) {}
 
   ngOnInit(): void {
     const today = new Date();
-    this.minDate = new Date(
+    this.minDate.set (new Date(
       today.getFullYear() - 10,
       today.getMonth(),
       today.getDate()
-    );
+    ));
 
     this.dynamicForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
@@ -145,9 +157,6 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadCustomValidators();
 
     // this.getAllCountry();
-    this.dynamicForm.valueChanges.subscribe(() => {
-      this.disable = this.dynamicForm?.invalid ? true : false;
-    });
   }
 
   loadCustomValidators() {
@@ -166,14 +175,16 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     // console.log(this.editData);
     if (this.editData && this.editData.Id) {
-      this.dataLoaded = false;
+      this.dataLoaded.set(false);
     
-       this.dynamicForm?.patchValue(this.editData);
+      setTimeout(() => {
+         this.dynamicForm?.patchValue(this.editData);
       // this.dynamicForm?.get('dob')?.updateValueAndValidity(); 
       this.loadCustomValidators();
       this.dynamicForm?.markAllAsTouched();
       this.dynamicForm?.updateValueAndValidity();
-      this.dataLoaded = true;
+      this.dataLoaded.set(true);
+      }, 3000)
      
      
  
@@ -184,12 +195,19 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   getAllCountry() {
     this.dataServ.getCountry().subscribe((data) => {
-      this.countries.push(data);
+      this.countries.set(data);
     });
   }
 
   onSubmit() {
-    this.loading = true;
+    this.loading.set(true);
+    if(this.dynamicForm?.invalid){
+      console.log('invalid');
+      
+      this.toastServ.showToastError("Invalid", "There are validation issues in your submission. Please review the form and try again.")
+
+      this.loading.set(false);
+    }
     console.log(this.dynamicForm?.value);
   }
 

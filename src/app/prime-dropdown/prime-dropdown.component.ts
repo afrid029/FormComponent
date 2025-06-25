@@ -12,7 +12,7 @@ import { DataLoaderComponent } from '../data-loader/data-loader.component';
   selector: 'app-prime-dropdown',
   templateUrl: './prime-dropdown.component.html',
   styleUrl: './prime-dropdown.component.scss',
-  imports : [SelectModule, CommonModule, ReactiveFormsModule, PrimeErrorComponent, DataLoaderComponent],
+  imports : [SelectModule, CommonModule, ReactiveFormsModule, PrimeErrorComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -41,9 +41,8 @@ export class PrimeDropdownComponent<T> extends CustomControlValueAccessorDirecti
   @Input() showLabel: boolean = true;
 
   @Input() submitted: boolean = false;
-    @Input() dataLoaded: boolean = true;
 
-  hasError(): boolean {
+  isError(): boolean {
     if (!this.control) return false;
 
     return (

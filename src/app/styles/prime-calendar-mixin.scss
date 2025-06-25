@@ -22,10 +22,10 @@
     }
 
     .p-datepicker-panel {
-        background-color: white !important;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.225) !important;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
+        background-color: $color-white !important;
+        box-shadow: $dialog-shadow !important;
+        backdrop-filter: $backdrop-filter;
+        -webkit-backdrop-filter: $backdrop-filter;
         border: transparent !important;
     }
 
@@ -35,7 +35,7 @@
 
     .p-datepicker-select-month,
     .p-datepicker-select-year {
-        color: black !important;
+        color: $color-black !important;
     }
 
     .p-datepicker-next-button,
@@ -44,11 +44,11 @@
     }
 
     .p-button-text:hover {
-        background-color: rgba(18, 43, 119, 0.062) !important;
+        background-color: $color-calendar-buttonOnHover!important;
     }
 
     .p-datepicker-weekday {
-        color: #b8b8b8 !important;
+        color: $color-calendar-weekday !important;
     }
 
     .p-datepicker-weekday-cell {
@@ -59,7 +59,7 @@
     .p-datepicker-month,
     .p-datepicker-year,
     .p-datepicker-decade {
-        color: #3f3f3f !important;
+        color: $color-calendar-date !important;
     }
 
 
@@ -74,6 +74,6 @@
     .p-datepicker-month-selected, 
     .p-datepicker-year-selected {
         background-color: $color-primary !important;
-        color: white !important;
+        color: $color-white !important;
     }
 }

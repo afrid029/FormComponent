@@ -5,13 +5,12 @@ import { CustomControlValueAccessorDirective } from '../directives/custom-contro
 import { CommonModule } from '@angular/common';
 import { PrimeErrorComponent } from '../prime-error/prime-error.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { DataLoaderComponent } from '../data-loader/data-loader.component';
 
 @Component({
   selector: 'app-prime-input',
   templateUrl: './prime-input.component.html',
   styleUrl: './prime-input.component.scss',
-  imports:[CommonModule,ReactiveFormsModule, PrimeErrorComponent, InputTextModule, DataLoaderComponent],
+  imports:[CommonModule,ReactiveFormsModule, PrimeErrorComponent, InputTextModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -33,14 +32,8 @@ export class PrimeInputComponent<T> extends CustomControlValueAccessorDirective<
   @Input() showRequiredIcon: boolean = true;
   @Input() autoFocus: boolean = false;
   @Input() isReadOnly: boolean = false;
-  @Input() dataLoaded: boolean = true;
   @Input() direction: 'ltr' | 'rtl' = 'ltr';
 
-  /**
-   *
-   */
-
-  isCurrentControlRequired: boolean = false;
 
   isCurrentControlRequiredOnDefault(): boolean {
 

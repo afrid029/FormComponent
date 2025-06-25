@@ -5,13 +5,12 @@ import { CommonModule } from '@angular/common';
 import { PrimeErrorComponent } from '../../prime-error/prime-error.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatePickerModule } from 'primeng/datepicker';
-import { DataLoaderComponent } from '../../data-loader/data-loader.component';
 
 @Component({
   selector: 'app-prime-datepicker',
   templateUrl: './prime-datepicker.component.html',
   styleUrl: './prime-datepicker.component.scss',
-  imports:[CommonModule, PrimeErrorComponent, ReactiveFormsModule,DatePickerModule, DataLoaderComponent],
+  imports:[CommonModule, PrimeErrorComponent, ReactiveFormsModule,DatePickerModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -40,7 +39,6 @@ export class PrimeDatepickerComponent<T> extends CustomControlValueAccessorDirec
 
   @Input() showButtonBar: boolean = false;
   @Input() disabledDates: any[] = [];
-    @Input() dataLoaded: boolean = true;
 
   isError(): boolean {
  

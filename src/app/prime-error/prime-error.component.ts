@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, signal } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 
 
@@ -14,7 +14,7 @@ export class PrimeErrorComponent implements OnInit, OnChanges {
   @Input() customErrorMessages: Record<string, string> | any = {};
   @Input() direction: 'ltr' | 'rtl' = 'ltr';
 
-  errorMessages: Record<string, string> = {};
+  errorMessages = signal<Record<string, string>>({});
 
   ngOnInit(): void {
     this.setErrorMessages();
@@ -45,10 +45,10 @@ export class PrimeErrorComponent implements OnInit, OnChanges {
         this.customErrorMessages[er]! = this.errors?.[er];
       }
     })
-    this.errorMessages = {
+    this.errorMessages.set({
       ...baseErrorMessages,
       ...this.customErrorMessages,
-    };
+    });
 
     // console.log(this.errors);
     

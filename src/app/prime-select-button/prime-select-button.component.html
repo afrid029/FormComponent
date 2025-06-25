@@ -1,7 +1,7 @@
 <div style="display: flex; flex-direction: column;"  *ngIf="control">
     <span class="flex gap-1" *ngIf="showLabel">
         <label [dir]="direction" class="block text-sm/6 font-medium text-gray-900 mb-1 fw-medium fs-6" [htmlFor]="label">{{ label }}
-        <span class="text-right" [style]="{ color: 'red' }" *ngIf="isCurrentControlRequiredOnDefault()">*</span></label>
+        <span class="text-right" [style]="{ color: 'red' }" *ngIf="isCurrentControlRequiredOnDefault()"> *</span></label>
     </span>
 
    
@@ -9,9 +9,12 @@
 
     <!-- <small id="sm-text-{{ label }}" *ngIf="hasSmallText">{{ smallText }}</small> -->
 
-    <ng-container *ngIf="isError()">
-        <app-prime-error [direction]="direction" [customErrorMessages]="customErrorMessages" [errors]="control.errors"> </app-prime-error>
-    </ng-container>
+    @if(isError()) {
+
+        <ng-container>
+            <app-prime-error [direction]="direction" [customErrorMessages]="customErrorMessages" [errors]="control.errors"> </app-prime-error>
+        </ng-container>
+    }
 </div>
 
 

@@ -1,10 +1,9 @@
 
 <p-button label="Click" (onClick)="OpenModel()"></p-button>
- <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
- <p-dataview #dv [value]="users">
+ <p-dataview #dv [value]="users()">
     <ng-template #list let-user>
         <div class="bg">
-            <div *ngFor="let item of users; let first = first" class="col-span-12 item">
+            <div *ngFor="let item of users(); let first = first" class="col-span-12 item">
                 <div>{{item.name}}</div>
                 <div class="btn-grp">
                   <p-button (click)="showDialog(item.Id)" label="Edit" />
@@ -14,5 +13,8 @@
     </ng-template>
 </p-dataview>
 
-<app-reactive-form *ngIf="visible" (onClose) = "onClose()" [editData]="filteredData"></app-reactive-form>
+@if(visible()) {
+
+    <app-reactive-form (onClose) = "onClose()" [editData]="filteredData()"></app-reactive-form>
+}
 <router-outlet />

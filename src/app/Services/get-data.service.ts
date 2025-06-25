@@ -24,7 +24,7 @@ export class GetDataService {
       Id: 2,
       agree: "yes",
       dob: "15-10-2026",
-      expiry: "01-01-2006",
+      expiry: "01-01-2016",
       gender : {type: 'Female'},
       name: "Kumari",
       nationality: {name: 'Canada'},

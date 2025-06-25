@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, signal } from '@angular/core';
 import { CustomControlValueAccessorDirective } from '../../directives/custom-control-value-accessor.directive';
 
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,7 +12,7 @@ import { DataLoaderComponent } from '../../data-loader/data-loader.component';
   selector: 'app-prime-filter-dropdown',
   templateUrl: './prime-filter-dropdown.component.html',
   styleUrl: './prime-filter-dropdown.component.scss',
-  imports : [SelectModule, CommonModule, ReactiveFormsModule, PrimeErrorComponent, DataLoaderComponent],
+  imports : [SelectModule, CommonModule, ReactiveFormsModule, PrimeErrorComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -27,7 +27,7 @@ export class PrimeFilterDropdownComponent<T> extends CustomControlValueAccessorD
   @Input() customErrorMessages: Record<string, string> = {};
   @Input() isRecommendedValue: string = '';
 
-  @Input() optionItems: any[] = [];
+  @Input() optionItems = signal<Record<string, string>[]> ([]);
   @Input() optionValue: string = '';
   @Input() optionLabel: string = '';
   @Input() placeHolder: string = '';
@@ -41,9 +41,8 @@ export class PrimeFilterDropdownComponent<T> extends CustomControlValueAccessorD
   @Input() showLabel: boolean = true;
 
   @Input() submitted: boolean = false;
-    @Input() dataLoaded: boolean = true;
 
-  hasError(): boolean {
+  isError(): boolean {
     if (!this.control) return false;
 
     return (

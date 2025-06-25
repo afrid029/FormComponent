@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormComponent } from './Components/reactive-form/reactive-form.component';
@@ -14,9 +14,10 @@ import { DataViewModule } from 'primeng/dataview';
 })
 export class AppComponent implements OnInit {
   title = 'FormComponent';
-  visible : boolean = false;
-  users : any[] = [];
-  filteredData : any = {};
+  visible = signal<boolean>(false);
+  users = signal<any[]>([]);
+  filteredData = signal<any>({});
+
    @ViewChild('conatiner', {read: ViewContainerRef, static: true})
   container! : ViewContainerRef;
 
@@ -25,10 +26,10 @@ export class AppComponent implements OnInit {
    */
   constructor(private dataServ : GetDataService) {}
 ngOnInit(): void {
-  this.users = this.dataServ.getData();
+  this.users.set(this.dataServ.getData());
 }
   OpenModel(){
-    this.visible = true
+    this.visible.set(true);
     // //  this.container?.clear();
     // const dynamicForm = this.container.createComponent(ReactiveFormComponent)
     // dynamicForm.instance.visible = true;
@@ -36,18 +37,18 @@ ngOnInit(): void {
   }
 
   showDialog(Id:number) {
-    // console.log(Id);
-    this.filteredData = this.users.filter(d => d.Id == Id)[0];
-    // console.log(filteredData);
-      this.OpenModel();
-    
+    console.log(Id);
+
+  const fetched = this.users().filter((p: any) => p.Id == Id)
+    this.filteredData.set(fetched[0]);
+    this.visible.set(true);
     
   }
 
   
  onClose() {
-    this.visible = false;
-    this.filteredData = {};
+    this.visible.set(false);
+    this.filteredData.set({});
     // this.container.clear();
   }
 }

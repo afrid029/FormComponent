@@ -4,11 +4,10 @@
 
         @if(isCurrentControlRequiredOnDefault()){
 
-            <span class="text-right" [style]="{ color: 'red' }" *ngIf="isCurrentControlRequiredOnDefault()">*</span>
+            <span class="text-right" [style]="{ color: 'red' }" *ngIf="isCurrentControlRequiredOnDefault()"> *</span>
         }
     </span>
 
-    <div class="d-flex flex-col gap-3">
          <p-select
         [options]="optionItems"
         [formControl]="control"
@@ -19,12 +18,12 @@
         [filterPlaceholder]="placeHolder"
         [showClear]="showClear"
         [filterBy]="optionLabel"
-        [class]="isCurrentControlRequiredOnDefault() ? 'p-inputtext-sm mt-2 required' : 'p-inputtext-sm mt-2'"
+        [class]="isError() ? 'p-inputtext-sm mt-2 required' : 'p-inputtext-sm mt-2'"
         (onChange)="onChange($event)"
         [dropdownIcon]="dropdownIcon"
         appendTo="body"
         [ngClass]="{
-      'ng-dirty ng-invalid': hasError(),
+      'ng-dirty ng-invalid': isError(),
     }"
         #dropdownFilterReference
     >
@@ -37,12 +36,14 @@
             </div>
         </ng-template>
     </p-select>
-     <app-data-loader class="d-flex justify-content-center align-items-center" [dataLoaded]="dataLoaded"></app-data-loader>
-    </div>
+
 
     <small id="sm-text-{{ label }}" *ngIf="hasSmallText">{{ smallText }}</small>
 
-    <ng-container *ngIf="hasError()">
-        <app-prime-error [direction]="direction" [customErrorMessages]="customErrorMessages" [errors]="control.errors"> </app-prime-error>
-    </ng-container>
+    @if(isError()){
+
+        <ng-container>
+            <app-prime-error [direction]="direction" [customErrorMessages]="customErrorMessages" [errors]="control.errors"> </app-prime-error>
+        </ng-container>
+    }
 </div>
