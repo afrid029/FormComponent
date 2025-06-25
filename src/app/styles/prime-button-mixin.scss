@@ -1,0 +1,33 @@
+@import './variable.scss';
+@mixin button {
+    //  .p-button {
+    //     &.full-width {
+    //         width: 100%;
+    //         display: block;
+    //     }
+
+    //     &.p-button-sm {
+    //         font-size: 0.875rem;
+    //         padding: 0.4rem 0.8rem;
+    //     }
+
+    //     &.p-button-lg {
+    //         font-size: 1.25rem;
+    //         padding: 0.75rem 1.5rem;
+    //     }
+
+    //     height: 4.5vh;
+    //     min-height: 36px;
+    // }
+
+    // .full-width {
+    //     width: 100% !important; 
+    // }
+
+    .submit .p-button {
+        width: $width-full !important;
+        background-color: $color-primary !important;
+        border: transparent !important;
+        color: $color-white !important;
+    }
+}
