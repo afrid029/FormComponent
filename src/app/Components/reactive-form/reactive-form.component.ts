@@ -35,6 +35,7 @@ import { DataLoaderComponent } from '../../data-loader/data-loader.component';
 import { MessageService } from 'primeng/api';
 import { Toast, ToastModule } from 'primeng/toast';
 import { ToastService } from '../../Services/toast.service';
+import { PassportMinimumLength } from '../../Validators/PassportMinmum.validator';
 
 @Component({
   selector: 'app-reactive-form',
@@ -64,11 +65,11 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   disable = signal<boolean>(false);
   loading = signal<boolean>(false);
   dataLoaded = signal<boolean>(true);
+  customErrors : Record<string,string[]> = {};
 
   gender = signal<Record<string, string>[]> ([
     { type: 'Male' },
-    { type: 'Female' },
-    { type: 'Not Prefer To Say' },
+    { type: 'Female' }
   ]);
 
   countries = signal<Record<string, string>[]> ([
@@ -131,6 +132,8 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() visible: boolean = true;
   @Input() editData: any = {};
   @Output() onClose = new EventEmitter();
+  @Output() onCreate = new EventEmitter<any>();
+  @Output() onUpdate = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder, private dataServ: GetDataService, private toastServ : ToastService) {}
 
@@ -148,28 +151,41 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
       middlename: new FormControl(''),
       gender: new FormControl('', [Validators.required]),
       dob: new FormControl('', [Validators.required, MinimumAge, MaximumAge]),
-      passport: new FormControl(null, [Validators.required]),
+      passport: new FormControl(null, [Validators.required, PassportMinimumLength]),
       nationality: new FormControl('', [Validators.required]),
       expiry: new FormControl('', [Validators.required]),
       agree: new FormControl('no', [Validators.required, AcceptValidator]),
+    },{
+      validators : [passportExpiry('dob')]
     });
     // this.dynamicForm.get('expiry')?.setValidators([passportExpiry('dob')]);
     this.loadCustomValidators();
+    // this.dynamicForm.valueChanges.subscribe(() => {
+    //   this.dynamicForm?.updateValueAndValidity();
+    // })
 
     // this.getAllCountry();
   }
 
   loadCustomValidators() {
+    this.customErrors['expiry'] = ['passportExpiry'];
+    // push('passportExpiry');
+    // this.customErrors.push({'expiry' : ['passportExpiry']});
+    
+    // ['expiry'].push('passportExpiry')
     if (this.dynamicForm) {
-      this.dynamicForm.get('expiry')?.addValidators([passportExpiry('dob')]);
-      this.dynamicForm.get('expiry')?.updateValueAndValidity();
+      // this.dynamicForm.get('expiry')?.addValidators([passportExpiry('dob')]);
+      // this.dynamicForm.get('expiry')?.updateValueAndValidity();
 
-      this.dynamicForm.get('dob')?.valueChanges.subscribe(() => {
-        this.dynamicForm?.get('expiry')?.touched
-          ? this.dynamicForm?.get('expiry')?.updateValueAndValidity()
-          : '';
-      });
+      // this.dynamicForm.get('dob')?.valueChanges.subscribe(() => {
+      //   this.dynamicForm?.get('expiry')?.touched
+      //     ? this.dynamicForm?.get('expiry')?.updateValueAndValidity()
+      //     : '';
+      // });
     }
+
+    // console.log(this.customErrors);
+    
   }
 
   ngAfterViewInit(): void {
@@ -185,8 +201,6 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dynamicForm?.updateValueAndValidity();
       this.dataLoaded.set(true);
       }, 3000)
-     
-     
  
     }
   }
@@ -201,13 +215,21 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSubmit() {
     this.loading.set(true);
+   
     if(this.dynamicForm?.invalid){
       
       
       this.toastServ.showToastError("Invalid", "There are validation issues in your submission. Please review the form and try again.")
 
       this.loading.set(false);
+    } else {
+     this.editData && this.editData.Id 
+     ? this.onUpdate.emit(this.dynamicForm?.value)
+     : this.onCreate.emit(this.dynamicForm?.value);
+      this.onHide();
     }
+
+ 
    
   }
 

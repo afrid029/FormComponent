@@ -27,7 +27,7 @@ export function MinimumAge(control: AbstractControl): ValidationErrors | null {
     
     if (diffInYears >= 10) {
       return null;
-    } else if(diffInMs < 0 || diffInMs < 10){
+    } else if(diffInYears < 10){
 
       return {
         MinimumAge: 'Candidate should be atleast 10 years old',

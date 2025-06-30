@@ -1,13 +1,14 @@
-    <p-toast position="top-center"></p-toast>
+    
 <p-dialog header="Identity Document" [modal]="true" [(visible)]="visible" (onHide)="onHide()"
-    [style]="{ width: '65rem' }">
+    [style]="{ width: '55rem' }">
+    <p-toast position="top-center"></p-toast>
 
 
     <app-data-loader [dataLoaded]="dataLoaded()"></app-data-loader>
 
     @if(dataLoaded()) {
 
-        <form class="container position-relative" [formGroup]="dynamicForm!" (ngSubmit)="onSubmit()">
+        <form class="container position-relative"  [formGroup]="dynamicForm!" (ngSubmit)="onSubmit()">
     
             <div class="row row-cols-2 row-gap-3">
                 <app-prime-input  class="col-12 col-md-6" label="Name" placeholder="Name" [isDisabled]=false
@@ -22,9 +23,9 @@
                     formControlName="dob"></app-prime-datepicker>
                 <app-prime-input-number class="col-12 col-md-6" label="Passport Number" placeholder="Passport Number" [isDisabled]=false
                     formControlName="passport" type="number"></app-prime-input-number>
-                <app-prime-filter-dropdown class="col-12 col-md-6" label="Nationality" placeHolder="Select nation" [optionItems]="countries"
+                <app-prime-filter-dropdown class="col-12 col-md-6" label="Nationality" placeHolder="Select Nationality" [optionItems]="countries"
                     optionLabel="name" formControlName="nationality"></app-prime-filter-dropdown>
-                <app-prime-datepicker class="col-12 col-md-6" [minDate]="minDate()" label="Passport Expiry Date" placeholder="Expiry Date"
+                <app-prime-datepicker class="col-12 col-md-6" [minDate]="minDate()" [customErrors]="customErrors['expiry']" label="Passport Expiry Date" placeholder="Expiry Date"
                     formControlName="expiry"></app-prime-datepicker>
             </div>
             <app-prime-select-button class="row mt-4" [allowEmpty]="false" formControlName="agree"
