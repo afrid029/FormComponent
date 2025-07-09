@@ -1,7 +1,9 @@
     
-<p-dialog header="Identity Document" [modal]="true" [(visible)]="visible" (onHide)="onHide()"
+
+
+<!-- <p-dialog header="Identity Document" [modal]="true" [(visible)]="visible" (onHide)="onHide()"
     [style]="{ width: '55rem' }">
-    <p-toast position="top-center"></p-toast>
+ -->
 
 
     <app-data-loader [dataLoaded]="dataLoaded()"></app-data-loader>
@@ -19,7 +21,7 @@
                     formControlName="middlename"></app-prime-input>
                 <app-prime-dropdown class="col-12 col-md-6" label="Gender" placeHolder="Select Gender" [optionItems]="gender()" optionLabel="type"
                     formControlName="gender"></app-prime-dropdown>
-                <app-prime-datepicker class="col-12 col-md-6" label="Date Of Birth" placeholder="Date Of Birth"
+                <app-prime-datepicker [maxDate]="today" class="col-12 col-md-6" label="Date Of Birth" placeholder="Date Of Birth"
                     formControlName="dob"></app-prime-datepicker>
                 <app-prime-input-number class="col-12 col-md-6" label="Passport Number" placeholder="Passport Number" [isDisabled]=false
                     formControlName="passport" type="number"></app-prime-input-number>
@@ -39,4 +41,4 @@
         </form>
     }
 
-</p-dialog>
+<!-- </p-dialog> -->
